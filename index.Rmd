@@ -11,3 +11,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Edwards HW Repository
 
+This is the link for assignment 1: [link](Homework_02.html)
