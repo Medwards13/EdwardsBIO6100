@@ -1,0 +1,119 @@
+---
+title: "Homework_03"
+author: "Madelynn Edwards"
+date: "2024-01-31"
+output: html_document
+---
+# Regular Expression Lab
+
+## Question #1
+Using a single regular expression, transform these lines:
+
+```First String    Second      1.22      3.4
+Second          More Text   1.555555  2.2220
+Third           x           3         124```
+
+Into what we need for a proper .csv file:
+
+```First String,Second,1.22,3.4,Second,More Text,1.555555,2.2220,Third,x,3,124```
+
+**Answer:** ```Search: \s{2, } Replace: ,```
+
+**Explanation:** I removed the spacing and added a comma so I searched for the spaces using ```\s``` along with the quantifier ```{2, }``` to search for 2 or more spaces specifically.  
+
+## Question #2
+Transform this conflict list:
+```
+Ballif, Bryan, University of Vermont
+
+Ellison, Aaron, Harvard Forest
+
+Record, Sydne, Bryn Mawr
+```
+Into this format:
+```
+Bryan Ballif (University of Vermont)
+
+Aaron Ellison (Harvard Forest)
+
+Sydne Record (Bryn Mawr)
+```
+
+**Answer:** ```Search: (\w+), (\w+), (.+) Replace: \2 \1 \(\3\)```
+
+**Explanation:** I built the search string by using ```(\w+), (\w+)``` to search for the last name and first name separated by the comma and then used (.+) to search for the rest of the characters after the second comma. I then replaced the order of the names by moving group 2 before group 1, removed the commas, and added parentheses on the third character string.
+
+## Question #3
+Write a regular expression to place each file name from this list:
+```
+0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Winder Slide.mp3 0004 Walking Cane.mp3
+```
+So that each file name is on its own line, like this:
+```
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Winder Slide.mp3
+0004 Walking Cane.mp3
+```
+
+**Answer:** ```Search:(?<=mp3)\s Replace: \n```
+
+**Explanation:** Using the preceded by string ```(?<=mp3)\s)```, I searched for the spacing that is preceded by mp3. I then replaced that with ```\n``` to start a new line after the space which moved the next song. The new line now starts with the group of numbers. 
+
+## Question #4
+Write a regular expression to grab the four digit number and put it at the end of the title (Using original data set from Question 3):
+```
+Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Winder Slide_0003.mp3
+Walking Cane_0004.mp3
+```
+
+**Answer:** ```Search: (\d{2, }) (.+(?=\.)), Replace:\2\_\1```
+
+**Explanation:** I used the search string ```(\d{2, })``` to search for the group of four numbers  because it searches for more than 1 number which omitted the "3" in mp3. Using the ```(.+(?=\.))``` I searched for everything followed by the period which which was mp3 and grouped that. I then replaced the order of the groups and added an underscore.
+
+## Questions #5
+Using this data set with genus, species, and two numeric variables:
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+Write a single regular expression to rearrange the data set like this:
+```
+C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55
+```
+
+**Answer:**```Search:(\w)\w+,(\w+).+((?<=,)\d+) Replace:\1_\2\,\3```
+
+**Explanation:**  For this search I used a capture ```(\w)\w+``` to create an abbreviation of the genus name and then used ```(\w+)``` to group the species name. ```.+((?<=,)\d+)``` was used to select the number after the last comma and group it as the third group. I used ```\1_\2\,\3``` as the replacement expression which combined the abbreviated genus name to the species name and then added the whole number after the comma.
+
+
+## Question #6
+Beginning with the original data set, rearrange it to abbreviate the species name like this:
+```
+C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55
+```
+**Answer:**```Search:(\w)\w+,(\w{4}).+((?<=,)\d+) Replace:\1_\2\,\3```
+
+**Explanation:** For this search I used ```(\w)\w+``` to capture an abbreviation similar to question 5 and then capture the first four letters in the species name using ```(\w{4})```. 
+
+## Question #7
+Beginning with the original data set, rearrange it so that the species and genus names are fused with the first 3 letters of each, followed by the two columns of numerical data in reversed order:
+```
+Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3
+```
+**Answer:** Search: (\w{3})\w+,(\w{3})\w+,(\d+\.?\d+),(\d+) Replace:\1\2, \4, \3
+
+**Explanation:** I used ```(\w{3})\w+```, twice to capture the first three characters of the first and second words and then used ```(\d+\.?\d+)```, and ```(\d+)``` to capture the numerical values with the decimal and then the whole numbers at the end. The first three letters of the genus and species names were then fused using ```\1\2```, and I switched the order of the numerical values.

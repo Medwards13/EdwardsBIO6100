@@ -1,7 +1,7 @@
 ---
 title: "EdwardsBIO6100"
 author: "Madelynn Edwards"
-date: "2024-01-24"
+date: "Made on 2024-01-24"
 output: html_document
 ---
 
@@ -9,6 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Edwards HW Repository
 
-This is the link for assignment 1: [link](Homework_02.html)
+## **Edwards HW Repository**
+
+
+#### This is where I will be posting my homework links for each lab
+
+*24 Jan 2024*
+
+* This is the link for assignment 1: [link](Homework_02.html)
+
+*31 Jan 2024*
+
+* This is the link for the Regular Expression Puzzles assignment: [link](Homework_03.html) 

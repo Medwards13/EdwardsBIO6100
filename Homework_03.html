@@ -11,8 +11,9 @@
 
 <meta name="author" content="Madelynn Edwards" />
 
+<meta name="date" content="2024-01-31" />
 
-<title>EdwardsBIO6100</title>
+<title>Homework_03</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,25 +350,141 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">EdwardsBIO6100</h1>
+<h1 class="title toc-ignore">Homework_03</h1>
 <h4 class="author">Madelynn Edwards</h4>
-<h4 class="date">Made on 2024-01-24</h4>
+<h4 class="date">2024-01-31</h4>
 
 </div>
 
 
-<div id="edwards-hw-repository" class="section level2">
-<h2><strong>Edwards HW Repository</strong></h2>
-<div id="this-is-where-i-will-be-posting-my-homework-links-for-each-lab" class="section level4">
-<h4>This is where I will be posting my homework links for each lab</h4>
-<p><em>24 Jan 2024</em></p>
-<ul>
-<li>This is the link for assignment 1: <a href="Homework_02.html">link</a></li>
-</ul>
-<p><em>31 Jan 2024</em></p>
-<ul>
-<li>This is the link for the Regular Expression Puzzles assignment: <a href="Homework_03.html">link</a></li>
-</ul>
+<div id="regular-expression-lab" class="section level1">
+<h1>Regular Expression Lab</h1>
+<div id="question-1" class="section level2">
+<h2>Question #1</h2>
+<p>Using a single regular expression, transform these lines:</p>
+<p><code>First String    Second      1.22      3.4 Second          More Text   1.555555  2.2220 Third           x           3         124</code></p>
+<p>Into what we need for a proper .csv file:</p>
+<p><code>First String,Second,1.22,3.4,Second,More Text,1.555555,2.2220,Third,x,3,124</code></p>
+<p><strong>Answer:</strong> <code>Search: \s{2, } Replace: ,</code></p>
+<p><strong>Explanation:</strong> I removed the spacing and added a comma
+so I searched for the spaces using <code>\s</code> along with the
+quantifier <code>{2, }</code> to search for 2 or more spaces
+specifically.</p>
+</div>
+<div id="question-2" class="section level2">
+<h2>Question #2</h2>
+<p>Transform this conflict list:</p>
+<pre><code>Ballif, Bryan, University of Vermont
+
+Ellison, Aaron, Harvard Forest
+
+Record, Sydne, Bryn Mawr</code></pre>
+<p>Into this format:</p>
+<pre><code>Bryan Ballif (University of Vermont)
+
+Aaron Ellison (Harvard Forest)
+
+Sydne Record (Bryn Mawr)</code></pre>
+<p><strong>Answer:</strong>
+<code>Search: (\w+), (\w+), (.+) Replace: \2 \1 \(\3\)</code></p>
+<p><strong>Explanation:</strong> I built the search string by using
+<code>(\w+), (\w+)</code> to search for the last name and first name
+separated by the comma and then used (.+) to search for the rest of the
+characters after the second comma. I then replaced the order of the
+names by moving group 2 before group 1, removed the commas, and added
+parentheses on the third character string.</p>
+</div>
+<div id="question-3" class="section level2">
+<h2>Question #3</h2>
+<p>Write a regular expression to place each file name from this
+list:</p>
+<pre><code>0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Winder Slide.mp3 0004 Walking Cane.mp3</code></pre>
+<p>So that each file name is on its own line, like this:</p>
+<pre><code>0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Winder Slide.mp3
+0004 Walking Cane.mp3</code></pre>
+<p><strong>Answer:</strong>
+<code>Search:(?&lt;=mp3)\s Replace: \n</code></p>
+<p><strong>Explanation:</strong> Using the preceded by string
+<code>(?&lt;=mp3)\s)</code>, I searched for the spacing that is preceded
+by mp3. I then replaced that with <code>\n</code> to start a new line
+after the space which moved the next song. The new line now starts with
+the group of numbers.</p>
+</div>
+<div id="question-4" class="section level2">
+<h2>Question #4</h2>
+<p>Write a regular expression to grab the four digit number and put it
+at the end of the title (Using original data set from Question 3):</p>
+<pre><code>Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Winder Slide_0003.mp3
+Walking Cane_0004.mp3</code></pre>
+<p><strong>Answer:</strong>
+<code>Search: (\d{2, }) (.+(?=\.)), Replace:\2\_\1</code></p>
+<p><strong>Explanation:</strong> I used the search string
+<code>(\d{2, })</code> to search for the group of four numbers because
+it searches for more than 1 number which omitted the “3” in mp3. Using
+the <code>(.+(?=\.))</code> I searched for everything followed by the
+period which which was mp3 and grouped that. I then replaced the order
+of the groups and added an underscore.</p>
+</div>
+<div id="questions-5" class="section level2">
+<h2>Questions #5</h2>
+<p>Using this data set with genus, species, and two numeric
+variables:</p>
+<pre><code>Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55</code></pre>
+<p>Write a single regular expression to rearrange the data set like
+this:</p>
+<pre><code>C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55</code></pre>
+<p><strong>Answer:</strong><code>Search:(\w)\w+,(\w+).+((?&lt;=,)\d+) Replace:\1_\2\,\3</code></p>
+<p><strong>Explanation:</strong> For this search I used a capture
+<code>(\w)\w+</code> to create an abbreviation of the genus name and
+then used <code>(\w+)</code> to group the species name.
+<code>.+((?&lt;=,)\d+)</code> was used to select the number after the
+last comma and group it as the third group. I used
+<code>\1_\2\,\3</code> as the replacement expression which combined the
+abbreviated genus name to the species name and then added the whole
+number after the comma.</p>
+</div>
+<div id="question-6" class="section level2">
+<h2>Question #6</h2>
+<p>Beginning with the original data set, rearrange it to abbreviate the
+species name like this:</p>
+<pre><code>C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55</code></pre>
+<p><strong>Answer:</strong><code>Search:(\w)\w+,(\w{4}).+((?&lt;=,)\d+) Replace:\1_\2\,\3</code></p>
+<p><strong>Explanation:</strong> For this search I used
+<code>(\w)\w+</code> to capture an abbreviation similar to question 5
+and then capture the first four letters in the species name using
+<code>(\w{4})</code>.</p>
+</div>
+<div id="question-7" class="section level2">
+<h2>Question #7</h2>
+<p>Beginning with the original data set, rearrange it so that the
+species and genus names are fused with the first 3 letters of each,
+followed by the two columns of numerical data in reversed order:</p>
+<pre><code>Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3</code></pre>
+<p><strong>Answer:</strong> Search: ()+,()+,(.?),() Replace:\1\2, \4,
+\3</p>
+<p><strong>Explanation:</strong> I used <code>(\w{3})\w+</code>, twice
+to capture the first three characters of the first and second words and
+then used <code>(\d+\.?\d+)</code>, and <code>(\d+)</code> to capture
+the numerical values with the decimal and then the whole numbers at the
+end. The first three letters of the genus and species names were then
+fused using <code>\1\2</code>, and I switched the order of the numerical
+values.</p>
 </div>
 </div>
 
