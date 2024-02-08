@@ -476,8 +476,8 @@ followed by the two columns of numerical data in reversed order:</p>
 Camher, 3, 10.5
 Myrpun, 4, 12.2
 Lasneo, 55, 3.3</code></pre>
-<p><strong>Answer:</strong> Search: ()+,()+,(.?),() Replace:\1\2, \4,
-\3</p>
+<p><strong>Answer:</strong> Search:
+<code>(\w{3})\w+,(\w{3})\w+,(\d+\.?\d+),(\d+) Replace:\1\2, \4, \3</code></p>
 <p><strong>Explanation:</strong> I used <code>(\w{3})\w+</code>, twice
 to capture the first three characters of the first and second words and
 then used <code>(\d+\.?\d+)</code>, and <code>(\d+)</code> to capture

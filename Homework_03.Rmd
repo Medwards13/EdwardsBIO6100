@@ -114,6 +114,6 @@ Camher, 3, 10.5
 Myrpun, 4, 12.2
 Lasneo, 55, 3.3
 ```
-**Answer:** Search: (\w{3})\w+,(\w{3})\w+,(\d+\.?\d+),(\d+) Replace:\1\2, \4, \3
+**Answer:** Search: ```(\w{3})\w+,(\w{3})\w+,(\d+\.?\d+),(\d+) Replace:\1\2, \4, \3```
 
 **Explanation:** I used ```(\w{3})\w+```, twice to capture the first three characters of the first and second words and then used ```(\d+\.?\d+)```, and ```(\d+)``` to capture the numerical values with the decimal and then the whole numbers at the end. The first three letters of the genus and species names were then fused using ```\1\2```, and I switched the order of the numerical values.
