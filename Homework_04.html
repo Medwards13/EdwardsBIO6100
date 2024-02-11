@@ -11,8 +11,9 @@
 
 <meta name="author" content="Madelynn Edwards" />
 
+<meta name="date" content="2024-02-07" />
 
-<title>EdwardsBIO6100</title>
+<title>Homework_04</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,29 +350,161 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">EdwardsBIO6100</h1>
+<h1 class="title toc-ignore">Homework_04</h1>
 <h4 class="author">Madelynn Edwards</h4>
-<h4 class="date">Made on 2024-01-24</h4>
+<h4 class="date">2024-02-07</h4>
 
 </div>
 
 
-<div id="edwards-hw-repository" class="section level2">
-<h2><strong>Edwards HW Repository</strong></h2>
-<div id="this-is-where-i-will-be-posting-my-homework-links-for-each-lab" class="section level4">
-<h4>This is where I will be posting my homework links for each lab</h4>
-<p><em>24 Jan 2024</em></p>
-<ul>
-<li>This is the link for assignment 1: <a href="Homework_02.html">link</a></li>
-</ul>
-<p><em>31 Jan 2024</em></p>
-<ul>
-<li>This is the link for the Regular Expression Puzzles assignment: <a href="Homework_03.html">link</a></li>
-</ul>
-<p><em>7 Feb 2024</em></p>
-<ul>
-<li>This is the link for Homework number 4 (Atomic vectors): <a href="Homework_04.html">link</a></li>
-</ul>
+<div id="atomic-vectors-and-basic-r-lab" class="section level1">
+<h1>Atomic Vectors and Basic R Lab</h1>
+<div id="question-1" class="section level2">
+<h2>Question #1</h2>
+<p>Suppose x = 1.1, a = 2.2, and b = 3.3. Assign each expression to the
+value of the variable z and print the value stored in z.</p>
+<ol style="list-style-type: lower-alpha">
+<li><span class="math inline">\(x^{a^b}\)</span></li>
+</ol>
+<pre class="r"><code>x &lt;- 1.1
+
+a &lt;- 2.2
+
+b &lt;- 3.3
+
+z &lt;- x^{a^b}
+print(z)</code></pre>
+<pre><code>## [1] 3.61714</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>(x<sup>a</sup>)<sup>b</sup></li>
+</ol>
+<pre class="r"><code>x &lt;- 1.1
+
+a &lt;- 2.2
+
+b &lt;- 3.3
+
+z &lt;- (x^a)^b
+print(z)</code></pre>
+<pre><code>## [1] 1.997611</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>3x<sup>3</sup>+2x<sup>2</sup>+1</li>
+</ol>
+<pre class="r"><code>x &lt;- 1.1
+
+a &lt;- 2.2
+
+b &lt;- 3.3
+
+z &lt;- (3*(x^3))+2*(x^2)+1
+print(z)</code></pre>
+<pre><code>## [1] 7.413</code></pre>
+</div>
+<div id="question-2" class="section level2">
+<h2>Question #2</h2>
+<p>Using the <code>rep</code> and <code>seq</code> functions, create the
+following vectors:</p>
+<ol style="list-style-type: lower-alpha">
+<li>(1,2,3,4,5,6,7,8,7,6,5,4,3,2,1)</li>
+</ol>
+<pre class="r"><code>a &lt;- seq(from = 1, to = 7, by = 1)
+
+b &lt;- seq(from = 8, to = 1, by = -1)
+
+z &lt;- c(a,b)
+print(z)</code></pre>
+<pre><code>##  [1] 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5)</li>
+</ol>
+<pre class="r"><code>my_vec&lt;- c(1,2,3,4,5)
+rep(x=my_vec, time=my_vec)</code></pre>
+<pre><code>##  [1] 1 2 2 3 3 3 4 4 4 4 5 5 5 5 5</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>(5,4,4,3,3,3,2,2,2,2,1,1,1,1,1)</li>
+</ol>
+<pre class="r"><code>my_vec&lt;-c(5,4,3,2,1)
+rep(x=my_vec, time= c(1,2,3,4,5))</code></pre>
+<pre><code>##  [1] 5 4 4 3 3 3 2 2 2 2 1 1 1 1 1</code></pre>
+</div>
+<div id="question-3" class="section level2">
+<h2>Question #3</h2>
+<p>Create a vector of two random uniform numbers. In a spatial map,
+these can be interpreted as x and y coordinates that give the location
+of an individual (such as a marked forest tree in a plot that has been
+mapped). Using one of R’s inverse trigonometry functions
+(<code>asin()</code>, <code>acos()</code>, or <code>atan()</code>),
+convert these numbers into polar coordinates</p>
+<pre class="r"><code>set.seed(1000)
+xy_coordinates &lt;- runif(2)
+polar_coordinates_r &lt;- sqrt(xy_coordinates[1]+xy_coordinates[2])
+print(polar_coordinates_r)</code></pre>
+<pre><code>## [1] 1.042461</code></pre>
+<pre class="r"><code>polar_coordinates_0 &lt;- atan(xy_coordinates[2]/xy_coordinates[1])
+print(polar_coordinates_0)</code></pre>
+<pre><code>## [1] 1.162948</code></pre>
+<pre class="r"><code>polar_coordinates &lt;- c(polar_coordinates_r, polar_coordinates_0)
+print(polar_coordinates)</code></pre>
+<pre><code>## [1] 1.042461 1.162948</code></pre>
+</div>
+<div id="question-4" class="section level2">
+<h2>Question #4</h2>
+<p>Create a vector
+<code>queue &lt;- c(&quot;sheep&quot;, &quot;fox&quot;, &quot;owl&quot;, &quot;ant&quot;)</code> where queue
+represents the animals that are lined up to enter Noah’s Ark, with the
+sheep at the front of the line. Using R expressions, update
+<code>queue</code> as:</p>
+<pre class="r"><code>queue &lt;- c(&quot;sheep&quot;, &quot;fox&quot;, &quot;owl&quot;, &quot;ant&quot;)
+
+# a. the serpent arrives and gets in line;
+queue &lt;- c(queue, &quot;serpent&quot;)
+print (queue)</code></pre>
+<pre><code>## [1] &quot;sheep&quot;   &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code># b. the sheep enters the ark;
+queue &lt;- queue[-1]
+print(queue)</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code># c. the donkey arrives and talks his way to the front of the line;
+queue &lt;- c(&quot;donkey&quot;, queue)
+print(queue)</code></pre>
+<pre><code>## [1] &quot;donkey&quot;  &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code># d. the serpent gets impatient and leaves;
+queue &lt;- queue[-5]
+print(queue)</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;owl&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code># e. the owl gets bored and leaves;
+queue &lt;- queue[-3]
+print(queue)</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code># f. the aphid arrives and the ant invites him to cut in line.
+queue &lt;- append(queue, &quot;aphid&quot;, after=2)
+print(queue)</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;aphid&quot;  &quot;ant&quot;</code></pre>
+<pre class="r"><code># g. Finally, determine the position of the aphid in the line.
+which(queue==&quot;aphid&quot;)</code></pre>
+<pre><code>## [1] 3</code></pre>
+</div>
+<div id="question-5" class="section level2">
+<h2>Question #5</h2>
+<p>Use R to create a vector of all of the integers from 1 to 100 that
+are not divisible by 2, 3, or 7.</p>
+<pre class="r"><code>my_vec&lt;- seq(1,100) # making vector sequence 1 to 100
+
+print(my_vec)</code></pre>
+<pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+##  [19]  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+##  [37]  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+##  [55]  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+##  [73]  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+##  [91]  91  92  93  94  95  96  97  98  99 100</code></pre>
+<pre class="r"><code>#my_vec &lt;- my_vec[which((my_vec%%2) &gt;0)] # %% gives remainders after dividing, &gt;=1 selecting those with a remainder greater than or equal to 1
+#print(my_vec)
+ 
+my_vec2&lt;- my_vec[which((my_vec%%2)&gt;=1 &amp; (my_vec%%3)&gt;=1 &amp; (my_vec%%7)&gt;=1)]
+
+print(my_vec2)</code></pre>
+<pre><code>##  [1]  1  5 11 13 17 19 23 25 29 31 37 41 43 47 53 55 59 61 65 67 71 73 79 83 85
+## [26] 89 95 97</code></pre>
 </div>
 </div>
 

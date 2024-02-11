@@ -21,4 +21,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 *31 Jan 2024*
 
-* This is the link for the Regular Expression Puzzles assignment: [link](Homework_03.html) 
+* This is the link for the Regular Expression Puzzles assignment: [link](Homework_03.html)
+
+*7 Feb 2024*
+
+* This is the link for Homework number 4 (Atomic vectors): [link](Homework_04.html)
