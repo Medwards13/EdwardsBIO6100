@@ -30,3 +30,11 @@ knitr::opts_chunk$set(echo = TRUE)
 *14 Feb 2024*
 
 * This is the link for Homework 5 (Matrices, lists, and data frames): [link](Homework_05.html)
+
+*21 Feb 2024*
+
+* This is the link for Homework 6 (Simulating and Fitting Data Distributions): [link](Homework_06.html)
+
+*28 Feb 2024*
+
+* This is the link for Homework 7 (Creating Fake Data Sets to Explore Hypotheses): [link](Homework_07.html)
