@@ -1,0 +1,156 @@
+---
+title: "Homework_07"
+author: "Madelynn Edwards"
+date: "2024-02-28"
+output: html_document
+---
+
+# Creating Fake Data Sets to Explore Hypotheses
+
+#### 1. Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
+
+##### **Experiment:** How does earthworm invasion intensity affect soil insect richness?
+
+Treatments: Control, Low, High (invasion intensity)
+
+Variable: Insect abundance (# of insects present)
+
+#### 2. To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.
+
+```{r}
+my_data <- read.csv("insect_abundance_earthworm_invasion.csv",header=TRUE,sep=",")
+str(my_data)
+summary(my_data)
+
+```
+```{r}
+var(my_data$Control)
+var(my_data$Low, na.rm = TRUE)
+var(my_data$High, na.rm = TRUE)
+
+sd(my_data$Control)
+sd(my_data$Low, na.rm = TRUE)
+sd(my_data$High, na.rm = TRUE)
+```
+
+
+Control: Sample size = 30, Mean = 68.37, Variance = 274.792, SD = 16.57685
+
+Low: Sample size = 27, Mean = 51.15, Variance = 362.8234, SD = 19.04792
+
+High: Sample size = 25, Mean = 30.46, Variance = 164.9547, SD = 12.84347
+
+#### 3. Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame with the appropriate structure.
+
+
+```{r}
+# creating data table 
+nGroup <- 3 # number of treatment groups
+nName <- c("Control","Low", "High") # names of groups
+nSize <- c(30,27,25) # number of observations in each group
+nMean <- c(68.37,51.15,30.46) # mean of each group
+nSD <- c(16.58,19.05,12.84) # standard deviation of each group
+
+
+ID <- 1:(sum(nSize)) # id vector for each row
+Abundance <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
+            rnorm(n=nSize[2],mean=nMean[2],sd=nSD[2]),
+            rnorm(n=nSize[3],mean=nMean[3],sd=nSD[3]))
+Treatment <- rep(nName,nSize)
+ANOdata <- data.frame(ID,Treatment,Abundance)
+str(ANOdata)
+print(ANOdata)
+```
+#### 4. Now write code to analyze the data, probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data.
+
+Since I want to compare differences among three different variables, I will be using a one-way **ANOVA**. The independent variable (treatment) is discrete and the dependent variable (abundance) is continuous.
+
+```{r message=FALSE}
+library(tidyverse)
+# Basic ANOVA in R
+abundanceAOV <- aov(Abundance~Treatment,data=ANOdata)
+print(abundanceAOV)
+print(summary(abundanceAOV))
+
+# graph for ANOVA
+ANOPlot <- ggplot(data=ANOdata,aes(x=Treatment,y=Abundance,fill=Treatment)) +
+  geom_boxplot()+
+  theme_bw()
+print(ANOPlot)
+```
+
+#### 5. Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
+
+Rerunning the code from questions 3 and 4 provides a different, but similar conclusion every time. There is variability within the dataset and the boxplots in the graph are different size, but there is always a significant difference among treatment.
+
+#### 6. Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)?
+
+```{r}
+# creating data table with new/adjusted means
+nGroup <- 3 # number of treatment groups
+nName <- c("Control","Low", "High") # names of groups
+nSize <- c(30,27,25) # number of observations in each group
+nMean <- c(50,45,39) # mean of each group
+nSD <- c(16.58,19.05,12.84) # standard deviation of each group
+
+
+ID <- 1:(sum(nSize)) # id vector for each row
+Abundance <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
+            rnorm(n=nSize[2],mean=nMean[2],sd=nSD[2]),
+            rnorm(n=nSize[3],mean=nMean[3],sd=nSD[3]))
+Treatment <- rep(nName,nSize)
+ANOdata_adjmeans <- data.frame(ID,Treatment,Abundance)
+str(ANOdata_adjmeans)
+print(ANOdata_adjmeans)
+
+
+# ANOVA results for adjusted data
+abundanceAOV_adjmeans <- aov(Abundance~Treatment,data=ANOdata_adjmeans)
+print(abundanceAOV_adjmeans)
+print(summary(abundanceAOV_adjmeans))
+```
+
+The original means were: Control: 68.37, Low: 51.15, High: 30.46 (*** significance).
+
+When I adjusted them to be Control: 50, Low: 45, High: 40, the results were not significant. I then adjusted them again at Control: 50, Low: 45, High: 39 and the results showed significance (*significance). Compared to the original means, the new means are much closer together while still being able to detect significance.
+
+#### 7. Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a feeling for the effect of random variation in the data.
+
+```{r}
+# creating new dataset with smaller sample size 
+nGroup <- 3 # number of treatment groups
+nName <- c("Control","Low", "High") # names of groups
+nSize <- c(5,5,5) # number of observations in each group
+nMean <- c(68.37,51.15,30.46) # mean of each group
+nSD <- c(16.58,19.05,12.84) # standard deviation of each group
+
+
+ID <- 1:(sum(nSize)) # id vector for each row
+Abundance <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
+            rnorm(n=nSize[2],mean=nMean[2],sd=nSD[2]),
+            rnorm(n=nSize[3],mean=nMean[3],sd=nSD[3]))
+Treatment <- rep(nName,nSize)
+ANOdata_adjss <- data.frame(ID,Treatment,Abundance)
+str(ANOdata_adjss)
+print(ANOdata_adjss)
+
+# ANOVA results for adjusted sample size data
+abundanceAOV_adjss <- aov(Abundance~Treatment,data=ANOdata_adjss)
+print(abundanceAOV_adjss)
+print(summary(abundanceAOV_adjss))
+```
+
+First, I made all treatments have equal sample size at n=25 (sig diff detected).
+
+All sample size n=20, still sig diff.
+
+All sample size n=15, still sig diff.
+
+All sample size n=10, still sig diff.
+
+All sample size n=5, still sig diff. **this is the smallest sample size to produce a statistical difference**
+
+All sample size n=3, no sig diff.
+
+All sample size n=4, no sig diff.
+

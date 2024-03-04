@@ -1,0 +1,112 @@
+---
+title: "Homework_06"
+author: "Madelynn Edwards"
+date: "2024-02-21"
+output: html_document
+---
+
+# Simulating and Fitting Data Distributions
+#### Fitting data distribution curves to a dataset that has intensity of earthworm invasion (biomass) and corresponding macro-arthropod abundance.
+
+#### The simulations will be using the abundance data (Number of individuals per m^2)
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+
+# Read in data vector
+z <- read.csv("plotdata_macro_constrained_20210105.csv",header=TRUE,sep=",")
+str(z)
+summary(z)
+
+# Plot histogram of data
+
+p1 <- ggplot(data=z, aes(x=abundance.m2, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+
+# Add empirical density curve
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+
+# Get maximum likelihood parameters for normal
+normPars <- fitdistr(z$abundance.m2,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] 
+
+# note structure of getting a named attribute
+# Plot normal prob. density
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$abundance.m2),len=length(z$abundance.m2))
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$abundance.m2), args = list(mean = meanML, sd = sdML))
+p1 + stat
+
+# Plot exponential prob. density
+expoPars <- fitdistr(z$abundance.m2,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$abundance.m2), args = list(rate=rateML))
+p1 + stat + stat2
+
+# Plot uniform prob. density
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$abundance.m2), args = list(min=min(z$abundance.m2), max=max(z$abundance.m2)))
+p1 + stat + stat2 + stat3
+
+# plot gamma prob. density - this one fits best!
+gammaPars <- fitdistr(z$abundance.m2,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$abundance.m2), args = list(shape=shapeML, rate=rateML))
+p1 + stat + stat2 + stat3 + stat4
+
+# Plot beta prob density
+pSpecial <- ggplot(data=z, aes(x=abundance.m2/(max(abundance.m2 + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$abundance.m2/max(z$abundance.m2 + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$abundance.m2), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+
+```
+
+#### Simulate a new data set. Using the best-fitting distribution, go back to the code and get the maximum likelihood parameters. Use those to simulate a new data set, with the same length as your original vector, and plot that in a histogram and add the probability density curve. Right below that, generate a fresh histogram plot of the original data, and also include the probability density curve.
+
+```{r warning=FALSE, message=FALSE}
+zsim <- rgamma(n=80, shape=3.6329359, rate = 0.0415673)
+zsim <- data.frame(1:80,zsim)
+names(zsim) <- list("ID","myVar")
+zsim <- zsim[zsim$myVar>0,]
+str(zsim)
+summary(zsim$myVar)
+
+
+psim <- ggplot(data=zsim, aes(x=myVar, y=after_stat(density))) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(psim)
+print(p1)
+```
+
+
+#### How do the two histogram profiles compare? Do you think the model is doing a good job of simulating realistic data that match your original measurements? Why or why not?
+
+The two histogram profiles are not drastically different but there are noticeable differences between the simulated data and the original data. The simulated data using the gamma distribution parameters is a little bit more uniform in spread and has less skewness compared to the original data
+
+#### If you have entered a large data frame with many columns, try running all of the code on a different variable to see how the simulation performs.
+
+Insect biomass follows similar distribution as insect abundance (gamma)
+
+Shannon diversity follows the normal distribution
+
+Earthworm biomass seems to fit the beta distribution the best
+
+For species richness, the normal distribution fits best
