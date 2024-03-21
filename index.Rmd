@@ -38,3 +38,8 @@ knitr::opts_chunk$set(echo = TRUE)
 *28 Feb 2024*
 
 * This is the link for Homework 7 (Creating Fake Data Sets to Explore Hypotheses): [link](Homework_07.html)
+
+*20 March 2024*
+
+* This is the link for Homework 8 (Data manipulations using the dplyr package):
+[link](Homework_08.html) 
