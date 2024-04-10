@@ -1,0 +1,92 @@
+---
+title: "Homework_09"
+author: "Madelynn Edwards"
+date: "2024-03-27"
+output: html_document
+---
+
+# Organizing Code with Structured Programming
+
+#### 1.Use the code that you worked on in Homework #7 (creating fake data sets), and re-organize it following the principles of structured programming. Do all the work in a single chunk in your R markdown file, just as if you were writing a single R script. Start with all of your annotated functions, preliminary calls, and global variables. The program body should be only a few lines of code that call the appropriate functions and run them in the correct order. Make sure that the output from one function serves as the input to the next. You can either daisy-chain the functions or write separate lines of code to hold elements in temporary variables and pass them along.
+```{r}
+# FUNCTION: fakedata()
+# Creating fake data set and data frame
+# This function will create a fake data set using the means and standard deviations from a different data set
+# nGroup : 3 treatments groups
+# nName: Treatment names (Control, Low, High)
+# nSize: sample size for each treatment (30, 27, 25)
+# nMean: means for each group (68.37, 19.05, 12.84)
+# nSD: Standard deviation for each group (16.58,19.05,12.84)
+############################
+
+library(tidyverse)
+
+fakedata <- function(nGroup = 3, nName = c("Control","Low", "High"), nSize = c(30,27,25), nMean = c(68.37,51.15,30.46),nSD = c(16.58,19.05,12.84), ID = 1:(sum(nSize))) {
+  Abundance <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
+                 rnorm(n=nSize[2],mean=nMean[2],sd=nSD[2]),
+                 rnorm(n=nSize[3],mean=nMean[3],sd=nSD[3]))
+Treatment <- rep(nName,nSize)
+ANOdata <- data.frame(ID,Treatment,Abundance)
+str(ANOdata)
+print(ANOdata)
+  }
+  
+x <- fakedata()
+
+fakedata()
+
+#############################
+# FUNCTION: statsfunc()
+# Statistical analysis on data : ANOVA
+# Using x from fakedata
+
+statsfunc <- function(ANOdata = x){
+  abundanceAOV <- aov(Abundance~Treatment,data=ANOdata)
+  print(abundanceAOV)
+  print(summary(abundanceAOV))
+}
+ y <- statsfunc()
+ y
+ 
+
+################################
+# FUNCTION: plotfunc()
+# plotting the ANOVA results
+# 
+ 
+library(ggplot2)
+
+plotfunc <- function(ANOdata = x){
+  ANOPlot <- ggplot(data=ANOdata,aes(x=Treatment,y=Abundance,fill=Treatment)) +
+    geom_boxplot()+
+    theme_bw()
+  print(ANOPlot)
+}
+z <- plotfunc()
+z
+
+```
+
+
+#### 2. Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
+
+```{r}
+# FUNCTION: posthocfunc()
+# tukey post-hoc test
+#  
+
+posthocfunc <- function(data = x) {
+  abundanceAOV <- aov(Abundance~Treatment,data=data)
+  tukey.test <- TukeyHSD(abundanceAOV)
+  print(tukey.test)
+  plot(tukey.test)
+}
+a <- posthocfunc()
+a
+```
+
+
+
+
+
+

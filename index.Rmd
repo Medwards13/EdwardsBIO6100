@@ -41,5 +41,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 *20 March 2024*
 
-* This is the link for Homework 8 (Data manipulations using the dplyr package):
-[link](Homework_08.html) 
+* This is the link for Homework 8 (Data manipulations using the dplyr package): [link](Homework_08.html) 
+
+*27 March 2024*
+
+* This is the link for Homework 9 (Organizing Code with Structured Programming): [link](Homework_09.html)
+* Script with just functions: [link](HW_09_Script.R)
+
+*3 April 2024*
+
+* This is the link for Homework 10 (For loops and randomization tests): [link](Homework_10.html)
+
+
