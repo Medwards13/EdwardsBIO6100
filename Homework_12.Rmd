@@ -1,0 +1,154 @@
+---
+title: "Homework_12"
+author: "Madelynn Edwards"
+date: "2024-04-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Advanced ggplotting
+```{r}
+data <- iris
+str(data)
+```
+
+#### Practice with Boxplots
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(patchwork)
+plot1<-ggplot(data)+
+  aes(x=Species,y=Sepal.Length)+
+  geom_boxplot(fill="thistle", outlier.shape = NA)+
+  geom_point(position=position_jitter(width=0.2,height=0.7),color="grey60",size=2)+
+  theme_bw()+
+  labs(x = "Species", y="Sepal Length (cm)")
+plot1
+
+plot2<-ggplot(data)+
+  aes(x=Species,y=Sepal.Width)+
+  geom_boxplot(fill="cornsilk", outlier.shape = NA)+
+  geom_point(position=position_jitter(width=0.2,height=0.7),color="grey60",size=2)+ theme_bw()+
+  labs(x = "Species", y="Sepal Width (cm)")
+plot2
+
+plot3<-ggplot(data)+
+  aes(x=Species,y=Petal.Length)+
+  geom_boxplot(fill="tomato", outlier.shape = NA)+
+  geom_point(position=position_jitter(width=0.2,height=0.7),color="grey60",size=2)+ theme_bw()+
+  labs(x = "Species", y="Petal Length (cm)")
+plot3
+
+plot4<-ggplot(data)+
+  aes(x=Species,y=Petal.Width)+
+  geom_boxplot(fill="chocolate", outlier.shape = NA)+
+  geom_point(position=position_jitter(width=0.2,height=0.7),color="grey60",size=2)+ theme_bw()+
+  labs(x = "Species", y="Petal Width (cm)")
+plot4
+
+# patchwork: arrange graph layout, include title, add levels
+box_plots <- (plot1|plot2)/(plot3|plot4)+plot_annotation(title="Flower morphology measurements",tag_levels = "A")
+box_plots
+
+ggsave(filename = "Boxplots", plot=box_plots, device="pdf", width = 20, height = 20,units="cm", dpi=300)
+```
+
+#### Practice with Barplots - listing all variables on one graph
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(reshape2)
+library(gridExtra)
+
+# Making data frame of variable means for each species
+df = aggregate(iris[,1:4], by = list(iris$Species), FUN = mean)
+df
+
+# putting all species, variables, and mean values in one group(column) for each
+group_df = melt(df, id.vars = c('Group.1'))
+head(group_df)
+
+plot <- ggplot(group_df, aes(x = Group.1, y = value, group = variable, fill = variable)) +
+  geom_bar(stat="identity",color='black', position = "dodge")+
+  xlab('Species') + ylab('Values') + theme_bw()+
+  theme(text = element_text(size=16),
+        axis.text.x = element_text(angle=0, hjust=.5),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5))+
+  ggtitle("Barplot by group")+
+  geom_text(aes(label=value), vjust=-0.3, size=3, # adding values
+            position = position_dodge(0.9))
+
+b_plot <- plot + scale_fill_discrete(name = "Characteristics", labels = c("Sepal Length", "Sepal Width", "Petal Length", "Petal Width"))
+
+b_plot
+
+ggsave(filename = "Barplot", plot=b_plot, device="pdf", width = 20, height = 20,units="cm", dpi=300)
+```
+
+#### Density plots
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(patchwork)
+
+d1 <- ggplot(data, aes(x = Sepal.Length, colour = Species, fill=Species)) +
+  geom_density()+ theme_bw()+
+  labs(x = "Sepal Length (cm)", y="Density")+
+  theme(legend.position = "none")
+d1
+
+d2 <- ggplot(data, aes(x = Sepal.Width, colour = Species, fill=Species)) +
+  geom_density()+ theme_bw()+
+  labs(x = "Sepal width (cm)", y="Density")+
+  theme(legend.position = "none")
+d2
+
+d3 <- ggplot(data, aes(x = Petal.Length, colour = Species, fill=Species)) +
+  geom_density()+ theme_bw()+
+  labs(x = "Petal Length (cm)", y="Density")+
+  theme(legend.position = "none")
+d3
+
+d4 <- ggplot(data, aes(x = Petal.Width, colour = Species, fill=Species)) +
+  geom_density()+ theme_bw()+
+  labs(x = "Petal Width (cm)", y="Density")+
+  theme(legend.position = "right")
+d4
+
+d_plots <- d1+d2+d3+d4+plot_annotation(title="Density plots",tag_levels = "A")
+d_plots
+
+ggsave(filename = "Densityplot", plot=d_plots, device="pdf", width = 20, height = 20,units="cm", dpi=300)
+```
+
+#### Wanted to find a graph type that could show all four quantitative variables at once and would allow you to see differences among the species: found a **parallel coordinates plot** - Never seen this plot before! Pretty cool
+
+```{r warning=FALSE, message=FALSE}
+library(GGally)
+library(viridis)
+library(tidyverse)
+library(hrbrthemes)
+library(patchwork)
+library(RColorBrewer)
+
+pcoord <- iris %>% 
+  ggparcoord(
+    columns = 1:4, groupColumn = 5, order = "anyClass",
+    scale = "globalminmax",
+    showPoints = TRUE, 
+    title = "Parallel Coordinate Plot (units not scaled)",
+    alphaLines = 0.3) +
+    theme_bw()+
+    theme(plot.title = element_text(size=10))+
+    xlab("Floral trait")
+    
+  
+
+pcoord
+
+ggsave(filename = "ParallelCoordPlot", plot=pcoord, device="pdf", width = 20, height = 20,units="cm", dpi=300)
+```
+
