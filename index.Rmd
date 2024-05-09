@@ -52,4 +52,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * This is the link for Homework 10 (For loops and randomization tests): [link](Homework_10.html)
 
+*10 April 2024*
+
+* This is the link for Homework 11 (Batch processing): [link](HW_11_batchprocessing.R) I apologize for having to upload a script. For some reason I couldn't get R markdown to work with this code. The working directories couldn't be changed and the code I used in the script (which ran fine) wouldn't work in markdown.
+
+*17 April 2024*
+
+* This is the link for Homework 12 (Advanced ggplotting): [link](Homework_12.html)
+
 
